@@ -1,0 +1,187 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+/* Navbar Styling */
+.navbar {
+    background-color: #333;
+    padding: 15px 30px;
+    color: rgb(0, 0, 0);
+    box-shadow: none; /* Remove shadow */
+}
+
+.navbar .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+}
+
+.nav-links button {
+    background-color: white; /* White background */
+    color: black; /* Black text color */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: none; /* Remove hover effect */
+}
+
+/* Checkout Container */
+.checkout-container {
+    width: 70%;
+    margin: 30px auto;
+    background-color: white;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Order Summary */
+.order-summary {
+    margin-bottom: 30px;
+}
+
+.order-summary h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.order-summary ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cart-item {
+    display: flex;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 8px;
+}
+
+.cart-item-details {
+    flex-grow: 1;
+}
+
+.cart-item-details p {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.order-total p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Billing Details */
+.billing-details {
+    margin-top: 20px;
+}
+
+.billing-details h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.billing-details form {
+    display: flex;
+    flex-direction: column;
+}
+
+.billing-details label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.billing-details textarea,
+.billing-details select {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+.billing-details button.checkout-btn {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.billing-details button.checkout-btn:hover {
+    background-color: #45a049;
+}
+
+/* Empty Cart Message */
+p {
+    font-size: 18px;
+    color: #888;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .checkout-container {
+        width: 90%;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cart-item img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
+    }
+
+    .cart-item-details p {
+        font-size: 14px;
+    }
+
+    .order-total p {
+        font-size: 16px;
+    }
+
+    .billing-details button.checkout-btn {
+        font-size: 16px;
+    }
+}

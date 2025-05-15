@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Checkout</title>
+        <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+    </head>
+    <body>
+        <nav class="navbar">
+            <a class="navbar-brand" href="#">WATCHCART</a>
+            <div class="nav-links">
+                <a href="{% url 'index' %}"><button>Home</button></a>
+                <a href="{% url 'cart_view' %}"><button>Cart</button></a>
+                <a href="{% url 'logout' %}"><button>Logout</button></a>
+            </div>
+        </nav>
+
+        <div class="checkout-container">
+            <h1>Checkout</h1>
+            {% if cart_items %}
+            <div class="order-summary">
+                <h2>Your Order</h2>
+                <ul>
+                    {% for item in cart_items %}
+                    <li class="cart-item">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        <div class="cart-item-details">
+                            <p><strong>{{ item.product.name }}</strong></p>
+                            <p>Price: ₹{{ item.product.offerprice }}</p>
+                            <p>Quantity: {{ item.quantity }}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="order-total">
+                    <p>Total Price: ₹{{ total_price }}</p>
+                </div>
+            </div>
+
+            <div class="billing-details">
+                <h2>Billing Information</h2>
+                <form method="POST" action="{% url 'process_checkout' %}">
+                    {% csrf_token %}
+                    <label for="address">Shipping Address:</label>
+                    <textarea id="address" name="address" rows="4" placeholder="Enter your shipping address"></textarea><br><br>
+
+                    <label for="payment-method">Payment Method:</label>
+                    <select id="payment-method" name="payment_method">
+                        <option value="credit_card">Credit Card</option>
+                        <option value="debit_card">Debit Card</option>
+                        <option value="net_banking">Net Banking</option>
+                        <option value="cod">Cash on Delivery</option>
+                    </select><br><br>
+
+                    <button type="submit" class="checkout-btn">Proceed to Payment</button>
+                </form>
+            </div>
+            {% else %}
+            <p>Your cart is empty. Please add items to your cart before proceeding to checkout.</p>
+            {% endif %}
+        </div>
+    </body>
+</html>

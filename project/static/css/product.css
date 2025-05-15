@@ -1,0 +1,244 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-links button {
+    background-color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+/* Product Page */
+.product-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap; /* Added for responsive layout */
+}
+
+/* Product Images */
+.product-images {
+    flex: 1;
+    text-align: center;
+}
+
+.main-image img {
+    width: 400px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.image-gallery {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+    flex-wrap: wrap; /* Ensure images wrap properly on small screens */
+}
+
+.image-gallery label {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.image-gallery img {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+}
+
+.image-gallery input {
+    display: none;
+}
+
+/* Product Details */
+.product-details {
+    flex: 1;
+    padding: 20px;
+}
+
+.product-details h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.brand {
+    font-size: 18px;
+    color: #555;
+}
+
+.price {
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+.offer-price {
+    color: #ff5722;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-left: 10px;
+}
+
+.discount {
+    color: green;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.description {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #444;
+}
+
+/* Stock Availability */
+.stock {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.in-stock {
+    color: green;
+    font-weight: bold;
+}
+
+.out-of-stock {
+    color: red;
+    font-weight: bold;
+}
+
+/* Buttons */
+.buttons {
+    margin-top: 20px;
+}
+
+.buy-now, .add-to-cart {
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 200px;
+    margin-right: 10px;
+}
+
+.buy-now {
+    background-color: #ff5722;
+    color: white;
+}
+
+.buy-now:hover {
+    background-color: #e64a19;
+}
+
+.add-to-cart {
+    background-color: #ff9800;
+    color: white;
+}
+
+.add-to-cart:hover {
+    background-color: #e68900;
+}
+
+/* Customer Reviews */
+.reviews {
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reviews h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 15px;
+    margin-top: 30px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .main-image img {
+        width: 100%;
+        max-width: 300px; /* Ensures the image doesn't stretch too much */
+    }
+
+    .image-gallery {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .image-gallery img {
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+    }
+
+    .product-details {
+        text-align: center;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .buy-now, .add-to-cart {
+        width: 100%;
+        max-width: 250px; /* Ensures buttons are not too wide */
+    }
+}
