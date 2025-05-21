@@ -1,0 +1,27 @@
+<!-- templates/profile/username_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Edit Username</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" name="username" class="form-control" value="{{ username }}">
+      <small class="text-danger">{{ errors.username }}</small>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Update Username</button>
+    <a href="{% url 'profile' %}" class="btn btn-secondary mt-3">Cancel</a>
+  </form>
+</div>
+
+
+</body>
+</html>

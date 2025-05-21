@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WatchCart - Payment</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #000;
+      padding: 10px 20px;
+      color: #fff;
+    }
+
+    .navbar-brand {
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: white;
+    }
+
+    .nav-links a button {
+      margin-left: 10px;
+      padding: 6px 12px;
+      background-color: white;
+      color: black;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .search {
+      margin-left: auto;
+    }
+
+    .search input {
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .search button {
+      padding: 5px 10px;
+      border-radius: 4px;
+      border: none;
+      background-color: black;
+      color: white;
+      cursor: pointer;
+    }
+
+    .payment-container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .payment-container h2 {
+      margin-bottom: 10px;
+    }
+
+    .payment-container p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    #rzp-button {
+      padding: 12px 24px;
+      background-color: #28a745;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #rzp-button:hover {
+      background-color: #218838;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .search {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="#">WATCHCART</a>
+    <button class="menu-toggle">☰</button>
+    <div class="nav-links">
+      <a href="{% url 'index' %}"><button>Home</button></a>
+      <a href="{% url 'product_list' %}"><button>All Products</button></a>
+      <a href="{% url 'cart_view' %}"><button>Cart</button></a>
+      <a href="{% url 'profile' %}"><button>My Profile</button></a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+      {% else %}
+        <a href="{% url 'userlogin' %}"><button>Login</button></a>
+      {% endif %}
+    </div>
+    <div class="search">
+      <form method="GET" action="{% url 'search_results' %}">
+        <input type="text" name="q" placeholder="Search products..." required>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  <!-- Payment Details -->
+  <div class="payment-container">
+    <h2>Processing Payment for Order #{{ order.id }}</h2>
+    <p>Total Amount: ₹{{ order.total_price }}</p>
+    <button id="rzp-button">Pay Now</button>
+  </div>
+
+  <script>
+    var options = {
+      "key": "{{ razorpay_key_id }}", // Replace with your Razorpay Key ID
+      "amount": "{{ amount }}", // in paisa (100 INR = 10000)
+      "currency": "{{ currency }}",
+      "name": "WatchCart",
+      "description": "Order #{{ order.id }}",
+      "image": "https://yourwebsite.com/logo.png", // Optional: Replace with your logo URL
+      "order_id": "{{ razorpay_order_id }}",
+      "handler": function (response) {
+        var form = document.createElement("form");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", "{{ callback_url }}");
+
+        const csrfToken = "{{ csrf_token }}";
+
+        var csrf = document.createElement("input");
+        csrf.setAttribute("type", "hidden");
+        csrf.setAttribute("name", "csrfmiddlewaretoken");
+        csrf.setAttribute("value", csrfToken);
+        form.appendChild(csrf);
+
+        var input1 = document.createElement("input");
+        input1.setAttribute("type", "hidden");
+        input1.setAttribute("name", "razorpay_payment_id");
+        input1.setAttribute("value", response.razorpay_payment_id);
+        form.appendChild(input1);
+
+        var input2 = document.createElement("input");
+        input2.setAttribute("type", "hidden");
+        input2.setAttribute("name", "razorpay_order_id");
+        input2.setAttribute("value", response.razorpay_order_id);
+        form.appendChild(input2);
+
+        var input3 = document.createElement("input");
+        input3.setAttribute("type", "hidden");
+        input3.setAttribute("name", "razorpay_signature");
+        input3.setAttribute("value", response.razorpay_signature);
+        form.appendChild(input3);
+
+        document.body.appendChild(form);
+        form.submit();
+      },
+      "prefill": {
+        "name": "{{ name }}",
+        "email": "{{ email }}",
+        "contact": "{{ contact }}"
+      },
+      "theme": {
+        "color": "#28a745"
+      }
+    };
+
+    var rzp = new Razorpay(options);
+    document.getElementById('rzp-button').onclick = function (e) {
+      rzp.open();
+      e.preventDefault();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WatchCart</title>
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="#">WATCHCART</a>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle">☰</button>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+      <a href="{% url 'index' %}"><button>Home</button></a>
+      <a href="{% url 'product_list' %}"><button>All Products</button></a>
+      <a href="{% url 'cart_view' %}"><button>Cart</button></a>
+      <a href="{% url 'profile' %}"><button>My Profile</button></a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+      {% else %}
+        <a href="{% url 'userlogin' %}"><button>Login</button></a>
+      {% endif %}
+    </div>
+
+    <!-- Search Form -->
+    <div class="search">
+      <form method="GET" action="{% url 'search_results' %}">
+        <input type="text" name="q" placeholder="Search products..." required>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  <!-- Carousel -->
+  <div class="carousel">
+    <div class="carousel-track">
+      <img src="{% static 'images/bnr1.webp' %}" alt="Carousel Image 1">
+      <img src="{% static 'images/bnr2.jpg' %}" alt="Carousel Image 2">
+      <img src="{% static 'images/bnr3.jpg' %}" alt="Carousel Image 3">
+    </div>
+  </div>
+
+  <!-- New Arrivals Heading -->
+  <h2 style="text-align: center; font-size: 28px; font-weight: 600; margin: 20px 0;">New Arrivals</h2>
+
+  <!-- Products Section -->
+  <div class="products-container">
+    {% for product in products %}
+    <div class="card">
+      <a href="{% url 'product' product.id %}">
+        <img src="{{ product.image.url }}" alt="Image of {{ product.name }}">
+      </a>
+      <div class="card-body">
+        <h5>{{ product.name }}</h5>
+        <p>{{ product.description }}</p>
+        <p><del>₹{{ product.price }}</del> <strong>₹{{ product.offerprice }}</strong></p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="foot1">
+      <ul>
+        <li>© All rights reserved by WatchCart, Kottayam, India.</li>
+      </ul>
+    </div>
+    <div class="foot2">
+      <ul>
+        <li><b>SOLUTIONS</b></li>
+        <li>My Account</li>
+        <li>Track Your Order</li>
+        <li>Order History</li>
+        <li>Payment Methods</li>
+        <li>Privacy Policy</li>
+      </ul>
+    </div>
+    <div class="foot3">
+      <ul>
+        <li><b>ABOUT US</b></li>
+        <li>About Us</li>
+        <li>Terms & Conditions</li>
+        <li>Privacy Policy</li>
+        <li>Return Policy</li>
+        <li>Site Map</li>
+      </ul>
+    </div>
+    <div class="foot4">
+      <ul>
+        <li><b>CONTACT US</b></li>
+        <li>Ettumanoor, Kottayam, Kerala</li>
+        <li>+91-86065 70657</li>
+        <li>Mon - Sat / 9:00AM - 6:00PM</li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- JavaScript for Mobile Menu -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuToggle = document.querySelector(".menu-toggle");
+      const navLinks = document.querySelector(".nav-links");
+
+      menuToggle.addEventListener("click", function () {
+        navLinks.classList.toggle("show");
+      });
+    });
+  </script>
+
+</body>
+
+</html>

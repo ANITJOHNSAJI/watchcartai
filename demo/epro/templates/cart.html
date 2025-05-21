@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cart - WatchCart</title>
+        <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    </head>
+    <body>
+        <!-- Main Content Wrapper -->
+        <main>
+            <!-- Navbar -->
+            <nav class="navbar">
+                <a class="navbar-brand" href="#">WATCHCART</a>
+                <button class="menu-toggle">☰</button>
+                <div class="nav-links">
+                    <a href="{% url 'index' %}"><button>Home</button></a>
+                    <a href="{% url 'product_list' %}"><button>All Products</button></a>
+                    <a href="{% url 'cart_view' %}"><button>Cart</button></a>
+                    <a href="{% url 'profile' %}"><button>My Profile</button></a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}"><button>Logout</button></a>
+                    {% else %}
+                        <a href="{% url 'userlogin' %}"><button>Login</button></a>
+                    {% endif %}
+                </div>
+                <div class="search">
+                    <form method="GET" action="{% url 'search_results' %}">
+                        <input type="text" name="q" placeholder="Search products..." required>
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+            <!-- Cart Section -->
+            <div class="cart-container">
+                <h1>Your Cart</h1>
+                {% if cart_items %}
+                <div class="cart-content">
+                    <div class="cart-items">
+                        {% for item in cart_items %}
+                        <div class="cart-item">
+                            <div class="cart-item-image">
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                            </div>
+                            <div class="cart-item-details">
+                                <p  <p class="product-name">{{ item.product.name }}</p>
+                                <p>₹<span class="item-price">{{ item.get_total_price }}</span></p>
+                                <p>Quantity: <span class="quantity">{{ item.quantity }}</span></p>
+                                <div class="quantity-actions">
+                                    <a href="{% url 'increment_cart' item.id %}"><button class="quantity-btn">+</button></a>
+                                    <a href="{% url 'decrement_cart' item.id %}"><button class="quantity-btn">-</button></a>
+                                </div>
+                            </div>
+                            <div class="cart-item-actions">
+                                <a href="{% url 'delete_cart_item' item.id %}"><button class="delete-btn">Remove</button></a>
+                                <a href="{% url 'checkout_single' item.product.id %}"><button class="buy-now-btn">Buy Now</button></a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="cart-summary">
+                        <p><strong>Total Price:</strong> ₹<span id="total-price">{{ total_price }}</span></p>
+                        <a href="{% url 'checkout' %}"><button class="checkout-btn">Checkout</button></a>
+                    </div>
+                </div>
+                {% else %}
+                <p class="empty-cart">Your cart is empty.</p>
+                {% endif %}
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="foot1">
+                <ul>
+                    <li>© All rights reserved by WatchCart, Kottayam, India.</li>
+                </ul>
+            </div>
+            <div class="foot2">
+                <ul>
+                    <li><b>SOLUTIONS</b></li>
+                    <li>My Account</li>
+                    <li>Track Your Order</li>
+                    <li>Order History</li>
+                    <li>Payment Methods</li>
+                    <li>Privacy Policy</li>
+                </ul>
+            </div>
+            <div class="foot3">
+                <ul>
+                    <li><b>ABOUT US</b></li>
+                    <li>About Us</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>Return Policy</li>
+                    <li>Site Map</li>
+                </ul>
+            </div>
+            <div class="foot4">
+                <ul>
+                    <li><b>CONTACT US</b></li>
+                    <li>Ettumanoor, Kottayam, Kerala</li>
+                    <li>+91-86065 70657</li>
+                    <li>Mon - Sat / 9:00AM - 6:00PM</li>
+                </ul>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - WatchCart</title>
+  <link rel="stylesheet" href="{% static 'css/checkout.css' %}">
+</head>
+<body>
+  
+        <!-- Navbar -->
+        <nav class="navbar">
+          <a class="navbar-brand" href="#">WATCHCART</a>
+          <button class="menu-toggle">☰</button>
+          <div class="nav-links">
+              <a href="{% url 'index' %}"><button>Home</button></a>
+              <a href="{% url 'product_list' %}"><button>All Products</button></a>
+              <a href="{% url 'cart_view' %}"><button>Cart</button></a>
+              <a href="{% url 'profile' %}"><button>My Profile</button></a>
+              {% if user.is_authenticated %}
+                  <a href="{% url 'logout' %}"><button>Logout</button></a>
+              {% else %}
+                  <a href="{% url 'userlogin' %}"><button>Login</button></a>
+              {% endif %}
+          </div>
+          <div class="search">
+              <form method="GET" action="{% url 'search_results' %}">
+                  <input type="text" name="q" placeholder="Search products..." required>
+                  <button type="submit">Search</button>
+              </form>
+          </div>
+      </nav>
+  <div class="checkout-container">
+    <h1 class="checkout-heading">Checkout</h1>
+
+    {% if cart_items %}
+    <div class="order-summary">
+      <h2>Your Order</h2>
+      <ul>
+        {% for item in cart_items %}
+        <li class="cart-item">
+          <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+          <div class="cart-item-details">
+            <p class="product-name">{{ item.product.name }}</p>
+            <p class="price">Price: ₹{{ item.product.offerprice }}</p>
+            <p class="quantity">Quantity: {{ item.quantity|default:1 }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="order-total">
+        <p>Total: ₹{{ total_price }}</p>
+      </div>
+    </div>
+
+    <div class="billing-details">
+      <h2 class="section-heading">Shipping Address</h2>
+      <form method="POST" action="{% url 'process_checkout' %}">
+        {% csrf_token %}
+
+        <div class="address-selection">
+          <div class="address-option">
+            <label>Use Default Address</label>
+            <input type="radio" name="address_choice" value="default" checked onchange="toggleAddress()">
+          </div>
+     <div class="default-address-display">
+  {% if default_address %}
+    <div class="address-box">
+      <p><strong>Name:</strong> {{ default_address.name }}</p>
+      <p><strong>Address:</strong> {{ default_address.address|linebreaksbr }}</p>
+      <p><strong>Phone:</strong> {{ default_address.phone }}</p>
+    </div>
+  {% else %}
+    <p class="no-address">You don't have a default address saved. Please select "Add New Address" to continue.</p>
+  {% endif %}
+</div>
+
+          <div class="address-option">
+            <label>Add New Address</label>
+            <input type="radio" name="address_choice" value="new" onchange="toggleAddress()">
+          </div>
+        </div>
+
+        <div id="new-address-fields" class="hidden">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your full name" aria-label="Full Name">
+
+          <label for="phone">Phone Number</label>
+          <input type="text" id="phone" name="phone" placeholder="Enter your phone number" aria-label="Phone Number">
+
+          <label for="address">Shipping Address</label>
+          <textarea id="address" name="address" rows="4" placeholder="Enter your shipping address" aria-label="Shipping Address"></textarea>
+        </div>
+
+        <div class="payment-section">
+          <label for="payment-method">Payment Method</label>
+          <select id="payment-method" name="payment_method" required aria-label="Payment Method">
+            <option value="">Select a payment method</option>
+            <option value="online">Online Payment</option>
+            <option value="cod">Cash on Delivery</option>
+          </select>
+        </div>
+
+        {% if is_single %}
+        <input type="hidden" name="is_single" value="True">
+        <input type="hidden" name="product_id" value="{{ product_id }}">
+        {% endif %}
+
+        <div class="button-wrapper">
+          <button type="submit" class="checkout-btn">Place Order</button>
+        </div>
+      </form>
+    </div>
+
+    {% else %}
+    <p class="empty-cart">Your cart is empty. Please add items to your cart before checking out.</p>
+    {% endif %}
+  </div>
+
+<script>
+  function toggleAddress() {
+    const newAddressFields = document.getElementById('new-address-fields');
+    const selected = document.querySelector('input[name="address_choice"]:checked').value;
+    newAddressFields.style.display = selected === 'new' ? 'block' : 'none';
+  }
+  window.onload = toggleAddress;
+</script>
+
+  
+        <!-- Footer -->
+        <footer class="footer">
+          <div class="foot1">
+              <ul>
+                  <li>© All rights reserved by WatchCart, Kottayam, India.</li>
+              </ul>
+          </div>
+          <div class="foot2">
+              <ul>
+                  <li><b>SOLUTIONS</b></li>
+                  <li>My Account</li>
+                  <li>Track Your Order</li>
+                  <li>Order History</li>
+                  <li>Payment Methods</li>
+                  <li>Privacy Policy</li>
+              </ul>
+          </div>
+          <div class="foot3">
+              <ul>
+                  <li><b>ABOUT US</b></li>
+                  <li>About Us</li>
+                  <li>Terms & Conditions</li>
+                  <li>Privacy Policy</li>
+                  <li>Return Policy</li>
+                  <li>Site Map</li>
+              </ul>
+          </div>
+          <div class="foot4">
+              <ul>
+                  <li><b>CONTACT US</b></li>
+                  <li>Ettumanoor, Kottayam, Kerala</li>
+                  <li>+91-86065 70657</li>
+                  <li>Mon - Sat / 9:00AM - 6:00PM</li>
+              </ul>
+          </div>
+      </footer>
+</body>
+</html>

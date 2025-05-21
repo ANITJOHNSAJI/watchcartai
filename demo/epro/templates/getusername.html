@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Link to external CSS file using Django's static tag -->
+    <link rel="stylesheet" href="{% static 'css/getusername.css' %}">
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="username" id="username" placeholder="Username">
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

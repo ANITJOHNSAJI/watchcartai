@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings</title>
+    <link rel="stylesheet" href="{% static 'css/bookings.css' %}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="navbar-brand">WATCHCART</div>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'firstpage' %}">Home</a>
+            <a href="{% url 'add_product' %}">Add Product</a>
+            <a href="{% url 'admin_bookings' %}">View Bookings</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h2>All Orders</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Method</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Product Details</th>
+                <th>Action</th>
+            </tr>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.user.username }}</td>
+                <td>{{ order.name }}</td>
+                <td>{{ order.phone }}</td>
+                <td>{{ order.shipping_address }}</td>
+                <td>{{ order.payment_method }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.total_price }}</td>
+
+                <td>
+                    {% for item in order.items.all %}
+                    <table class="product-table">
+                        <tr>
+                            <td class="product-image-cell">
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="product-image">
+                            </td>
+                            <td class="product-info-cell">
+                                <strong>Product:</strong> {{ item.product.name }} <br>
+                                <strong>Brand:</strong> {{ item.product.brand }} <br>
+                                <strong>Colour:</strong> {{ item.product.colour }} <br>
+                                <strong>Price:</strong> ₹{{ item.product.offerprice }} x {{ item.quantity }} <br>
+                                <strong>Type:</strong> {{ item.product.type }} <br>
+                                <strong>Description:</strong> {{ item.product.description }} <br>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr>
+                    {% endfor %}
+                </td>
+
+                <td>
+                    {% if order.status == "Pending" %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                        <button type="submit" class="btn">Confirm</button>
+                    </form>
+                    {% else %}
+                    <button class="btn" disabled>Confirmed</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

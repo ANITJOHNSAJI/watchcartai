@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile - WatchCart</title>
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="#">WATCHCART</a>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle">☰</button>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+      <a href="{% url 'index' %}"><button>Home</button></a>
+      <a href="{% url 'product_list' %}"><button>All Products</button></a>
+      <a href="{% url 'cart_view' %}"><button>Cart</button></a>
+      <a href="{% url 'profile' %}"><button>My Profile</button></a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+      {% else %}
+        <a href="{% url 'userlogin' %}"><button>Login</button></a>
+      {% endif %}
+    </div>
+
+    <!-- Search Form -->
+    <div class="search">
+      <form method="GET" action="{% url 'search_results' %}">
+        <input type="text" name="q" placeholder="Search products..." required />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Profile Info -->
+    <div class="profile-section">
+      <h2>User Profile</h2>
+      <p><strong>Email:</strong> {{ email }} <a href="{% url 'edit_email' %}">Edit</a></p>
+      <p><strong>Username:</strong> {{ request.user.username }} <a href="{% url 'edit_username' %}">Edit</a></p>
+    </div>
+
+    <!-- Address Info -->
+    <div class="address-section">
+      <h3>Addresses</h3>
+      <a class="custom-btn green" href="{% url 'add_address' %}">Add Address</a>
+      {% if addresses %}
+        <ul class="list-group">
+          {% for addr in addresses %}
+            <li class="list-group-item">
+              <strong>{{ addr.name }}</strong><br />
+              {{ addr.address }}<br />
+              Phone: {{ addr.phone }}<br />
+              <a href="{% url 'edit_address' addr.id %}">Edit</a>
+              <a href="{% url 'delete_address' addr.id %}">Delete</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No addresses saved yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Order History -->
+    <div class="order-history-section">
+      <h3>Order History</h3>
+      {% if orders %}
+        <ul class="list-group">
+          {% for order in orders %}
+            <li class="list-group-item">
+              <strong>Order ID:</strong> {{ order.id }}<br />
+              <strong>Date:</strong> {{ order.date_ordered|date:"M d, Y H:i" }}<br />
+              <strong>Status:</strong> {{ order.status }}<br />
+              <strong>Total:</strong> ₹{{ order.total_price }}<br />
+              <a href="{% url 'order_detail' order.id %}">View Details</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>You have not placed any orders yet.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="foot1">
+      <ul>
+        <li>© All rights reserved by WatchCart, Kottayam, India.</li>
+      </ul>
+    </div>
+    <div class="foot2">
+      <ul>
+        <li><b>SOLUTIONS</b></li>
+        <li>My Account</li>
+        <li>Track Your Order</li>
+        <li>Order History</li>
+        <li>Payment Methods</li>
+        <li>Privacy Policy</li>
+      </ul>
+    </div>
+    <div class="foot3">
+      <ul>
+        <li><b>ABOUT US</b></li>
+        <li>About Us</li>
+        <li>Terms & Conditions</li>
+        <li>Privacy Policy</li>
+        <li>Return Policy</li>
+        <li>Site Map</li>
+      </ul>
+    </div>
+    <div class="foot4">
+      <ul>
+        <li><b>CONTACT US</b></li>
+        <li>Ettumanoor, Kottayam, Kerala</li>
+        <li>+91-86065 70657</li>
+        <li>Mon - Sat / 9:00AM - 6:00PM</li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

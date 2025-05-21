@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Homepage</title>
+    <link rel="stylesheet" href="{% static 'css/firstpage.css' %}">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="navbar-brand">WATCHCART</div>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'firstpage' %}">Home</a>
+            <a href="{% url 'add_product' %}">Add Product</a>
+            <a href="{% url 'admin_bookings' %}">View Bookings</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Product List -->
+        <div class="container">
+            <h2>All Products</h2>
+            <div class="product-list">
+                {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <div class="product-info">
+                        <h5>{{ product.name }}</h5>
+                        <p><del>₹{{ product.price }}</del> <strong>₹{{ product.offerprice }}</strong></p>
+                        <a href="{% url 'edit_g' product.id %}"><button class="edit-btn">Edit</button></a>
+                        <a href="{% url 'delete_g' product.id %}"><button class="delete-btn">Delete</button></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Gallery Images -->
+        <div class="gallery">
+            {% for i in gallery_images %}
+            <div class="gallery-item">
+                <img src="{{ i.feedimage.url }}" alt="{{ i.name }}">
+                <p>{{ i.name }}</p>
+                <p>Price: ₹{{ i.price }}</p>
+                <p>Offer Price: ₹{{ i.offerprice }}</p>
+                <a href="{% url 'delete_g' i.id %}"><button class="delete-btn">Delete</button></a>
+                <a href="{% url 'edit_g' i.id %}"><button class="edit-btn">Edit</button></a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
